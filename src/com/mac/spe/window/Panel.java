@@ -1,6 +1,6 @@
 package com.mac.spe.window;
 
-import com.mac.spe.graphics.Renderer;
+import com.mac.spe.core.Renderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,9 +32,9 @@ public class Panel extends JPanel{
         this.scale = scale;
         this.renderer = renderer;
 
-        image = new BufferedImage(getWidthInPixels(), getHeightInPixels(), BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        setPreferredSize(new Dimension(getWidthInPixels() * scale, getHeightInPixels() * scale));
+        setPreferredSize(new Dimension(getWidthInPixels(), getHeightInPixels()));
     }
 
     @Override
@@ -46,12 +46,14 @@ public class Panel extends JPanel{
         
         for(int i = 0; i < pixels.length; i++) pixels[i] = renderer.getPixel(i);
         
-        g.drawImage(image,
-                (getWidth() - getWidthInPixels() * scale) / 2,
-                (getHeight() - getHeightInPixels() * scale) / 2,
-                getWidthInPixels() * scale,
-                getHeightInPixels() * scale,
-                null);
+        g.drawImage(image, 0, 0, getWidthInPixels(), getHeightInPixels(), null);
+        
+//        g.drawImage(image,
+//                (getWidth() - getWidthInPixels() * scale) / 2,
+//                (getHeight() - getHeightInPixels() * scale) / 2,
+//                getWidthInPixels() * scale,
+//                getHeightInPixels() * scale,
+//                null);
     }
 
     public int getWidthInPixels(){

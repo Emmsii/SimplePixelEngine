@@ -27,4 +27,8 @@ public class Sprite extends Bitmap{
         
         return new Sprite(w, h, spritePixels);
     }
+    
+    public ColoredSprite convertToColoredSprite(int foregroundColor, int backgroundColor){
+        return new ColoredSprite(width, height, pixels, foregroundColor, backgroundColor);
+    }
 }

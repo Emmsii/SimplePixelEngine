@@ -1,6 +1,4 @@
-package com.mac.spe;
-
-import com.mac.spe.graphics.Renderer;
+package com.mac.spe.core;
 
 /**
  * Project: SimplePixelEngine

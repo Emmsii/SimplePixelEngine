@@ -1,5 +1,8 @@
 package com.mac.spe;
 
+import com.mac.spe.core.Engine;
+import com.mac.spe.core.Renderer;
+
 /**
  * Project: SimplePixelEngine
  * PC
@@ -8,6 +11,11 @@ package com.mac.spe;
 public class Main {
     
     public static void main(String[] args){
-        Engine engine = new Engine(new Game(), "Simple Pixel Engine", 160, 120, 3, 30.0);
+        
+        Game game = new Game();
+        Engine engine = new Engine(game, "Pixel Engine", 640, 360, 2, 30.0);
+        engine.start();
+
+        Renderer.transparentColor = 0xff000000;
     }
 }
