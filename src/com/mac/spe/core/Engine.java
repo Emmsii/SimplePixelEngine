@@ -1,5 +1,6 @@
 package com.mac.spe.core;
 
+import com.mac.spe.rendering.Renderer;
 import com.mac.spe.window.Panel;
 import com.mac.spe.window.Terminal;
 

@@ -1,7 +1,8 @@
 package com.mac.spe;
 
 import com.mac.spe.core.BaseGame;
-import com.mac.spe.core.Renderer;
+import com.mac.spe.rendering.RenderMode;
+import com.mac.spe.rendering.Renderer;
 import com.mac.spe.graphics.*;
 import com.mac.spe.io.ImageLoader;
 
@@ -25,6 +26,7 @@ public class Game extends BaseGame {
     @Override
     public void init() {
         
+        Renderer.setRenderMode(RenderMode.PRECISE);
         
         font = new Font(ImageLoader.load("res/font2.png"), 8, 16, '?');
         
@@ -51,7 +53,8 @@ public class Game extends BaseGame {
     public void render(Renderer renderer) {
         renderer.clear(0xff00ff);
 
-//        renderer.drawSprite(test, 20, 20);
+//        renderer.drawSpriteColored(wall1, 20, 20, 0x4286f4);
+        
 //        for(int y = 0; y < 10; y++){
 //            for(int x = 0; x < 10; x++){
 //                switch (tiles[x][y]){
@@ -69,7 +72,7 @@ public class Game extends BaseGame {
 //            }
 //        }
         
-        renderer.write("It's dangerous to go alone! Take this.", font, 5, 5, 0x00ff00, 0x0000ff);
+        renderer.write("It's dangerous to go alone! Take this.", font, 5, 5, -1, -1);
         
     }
 }

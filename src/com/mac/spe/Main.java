@@ -1,7 +1,7 @@
 package com.mac.spe;
 
 import com.mac.spe.core.Engine;
-import com.mac.spe.core.Renderer;
+import com.mac.spe.rendering.Renderer;
 
 /**
  * Project: SimplePixelEngine
@@ -17,5 +17,6 @@ public class Main {
         engine.start();
 
         Renderer.transparentColor = 0xff000000;
+        Renderer.ignoreColor = -1;
     }
 }

@@ -1,6 +1,6 @@
 package com.mac.spe.graphics;
 
-import com.mac.spe.core.Renderer;
+import com.mac.spe.rendering.Renderer;
 
 /**
  * Project: SimplePixelEngine
@@ -21,10 +21,8 @@ public class ColoredSprite extends Sprite{
     @Override
     public int getPixel(int index) {
         int col = super.getPixel(index);
-        if(Renderer.transparentColor == -1 ) {
-            if (col == Renderer.transparentColor && backgroundColor != -1) return backgroundColor;
-            if (col != Renderer.transparentColor && foregroundColor != -1) return foregroundColor;
-        }
+        if (col == Renderer.transparentColor && backgroundColor != -1) return backgroundColor;
+        if (col != Renderer.transparentColor && foregroundColor != -1) return foregroundColor;
         return col;
     }
 }

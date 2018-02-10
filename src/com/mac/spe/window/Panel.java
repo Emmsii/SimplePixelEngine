@@ -1,6 +1,6 @@
 package com.mac.spe.window;
 
-import com.mac.spe.core.Renderer;
+import com.mac.spe.rendering.Renderer;
 
 import javax.swing.*;
 import java.awt.*;

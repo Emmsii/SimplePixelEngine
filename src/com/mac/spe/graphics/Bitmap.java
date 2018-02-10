@@ -45,7 +45,7 @@ public abstract class Bitmap {
     }
 
     public int getPixel(int index){
-        if(index < 0 || index >= pixels.length) return 0;
+        if(!inBounds(index)) return 0;
         return pixels[index];
     }
     
@@ -54,6 +54,10 @@ public abstract class Bitmap {
     }
     
     public boolean inBounds(int x, int y){
-        return x >= 0 && y >= 0 && x < width && y < height;
+        return inBounds(x + y * width);
+    }
+    
+    public boolean inBounds(int index){
+        return index >= 0 && index < pixels.length;
     }
 }

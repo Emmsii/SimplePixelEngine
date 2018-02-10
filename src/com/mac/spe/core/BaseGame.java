@@ -1,5 +1,7 @@
 package com.mac.spe.core;
 
+import com.mac.spe.rendering.Renderer;
+
 /**
  * Project: SimplePixelEngine
  * PC
