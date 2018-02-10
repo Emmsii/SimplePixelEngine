@@ -16,27 +16,53 @@ public class Font extends Spritesheet{
                            "?????abcdefghijk" +
                            "lmnopqrstuvwxyz?" +
                            "????????????????" +
-                           "#%&@$.,!?:;`\"()[" +
+                           "#%&@$.,!?:;'\"()[" +
                            "]*/\\+-<=>???????" +
-                           "????????█▓▒░?????";
+                           "???⚪◔◑◕⚫█▓▒░???? ";
         
     private Sprite[][] sprites;
+    private Sprite nullSprite;
     private int charactersWide, charactersHigh;
-    
-    public Font(BufferedImage image, int charWidth, int charHeight) {
-       super(image);
+
+    public Font(BufferedImage image, int charWidth, int charHeight, char nullChar) {
+        super(image);
         this.charWidth = charWidth;
         this.charHeight = charHeight;
 
         createSprites();
+        if(chars.indexOf(nullChar) < 0) throw new IllegalArgumentException("'" + nullChar + "' is not a valid. Character must exist in chars String.");
+        nullSprite = getCharacterSprite(nullChar);
     }
     
-    public Font(BufferedImage image, int charWidth, int charHeight, String chars){
+    public Font(BufferedImage image, int charWidth, int charHeight, Sprite nullSprite) {
+        super(image);
+        if(nullSprite == null) throw new IllegalArgumentException("Font must have a nullSprite.");
+        this.charWidth = charWidth;
+        this.charHeight = charHeight;
+        this.nullSprite = nullSprite;
+        
+        createSprites();
+    }
+
+    public Font(BufferedImage image, int charWidth, int charHeight, String chars, char nullChar){
         super(image);
         this.charWidth = charWidth;
         this.charHeight = charHeight;
-        this.chars = chars; 
-
+        this.chars = chars;
+        
+        createSprites();
+        if(chars.indexOf(nullChar) < 0) throw new IllegalArgumentException("'" + nullChar + "' is not a valid. Character must exist in chars String.");
+        nullSprite = getCharacterSprite(nullChar); 
+    }
+    
+    public Font(BufferedImage image, int charWidth, int charHeight, String chars, Sprite nullSprite){
+        super(image);
+        if(nullSprite == null) throw new IllegalArgumentException("Font must have a nullSprite.");
+        this.charWidth = charWidth;
+        this.charHeight = charHeight;
+        this.chars = chars;
+        this.nullSprite = nullSprite;
+        
         createSprites();
     }
     
@@ -60,6 +86,12 @@ public class Font extends Spritesheet{
     public Sprite getCharacterSprite(int x, int y){
         if(x < 0 || y < 0 || x >= charactersWide || y >= charactersHigh) return null;
         return sprites[x][y];
+    }
+    
+    public Sprite getCharacterSprite(char c){
+        int charIndex = chars.indexOf(c);
+        if(charIndex < 0) return nullSprite; // TODO: Return a default, empty sprite.
+        return getCharacterSprite(charIndex % 16, charIndex / 16);
     }
     
     public int getCharWidth(){

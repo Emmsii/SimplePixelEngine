@@ -25,7 +25,8 @@ public class Game extends BaseGame {
     @Override
     public void init() {
         
-        font = new Font(ImageLoader.load("res/font2.png"), 8, 16);
+        
+        font = new Font(ImageLoader.load("res/font2.png"), 8, 16, '?');
         
         Spritesheet sheet = new Spritesheet(ImageLoader.load("res/tiles.png"));
         wall1 = Sprite.cutFromSpritesheet(sheet, 0, 0, 16, 16);
@@ -68,7 +69,7 @@ public class Game extends BaseGame {
 //            }
 //        }
         
-        renderer.write("Hello world! >> << █▓▒░", font, 5, 5);
+        renderer.write("It's dangerous to go alone! Take this.", font, 5, 5, 0x00ff00, 0x0000ff);
         
     }
 }

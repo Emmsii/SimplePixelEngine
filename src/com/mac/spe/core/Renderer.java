@@ -18,30 +18,52 @@ public class Renderer extends Bitmap {
     }
     
     public void drawSprite(Sprite sprite, int xp, int yp){
+        drawSprite(sprite, xp, yp, transparentColor, transparentColor);
+    }
+    
+    public void drawSprite(Sprite sprite, int xp, int yp, int foregroundColor){
+        drawSprite(sprite, xp, yp, foregroundColor, transparentColor);
+    }
+    
+    public void drawSprite(Sprite sprite, int xp, int yp, int foregroundColor, int backgroundColor){
         for(int y = 0; y < sprite.getHeight(); y++){
             int ya = y + yp;
             for(int x = 0; x < sprite.getWidth(); x++){
                 int xa = x + xp;
                 int col = sprite.getPixel(x, y);
-                if(col != transparentColor) setPixel(xa, ya, sprite.getPixel(x, y));
+                if(col != transparentColor) setPixel(xa, ya, foregroundColor == transparentColor ? col : foregroundColor);
+                else if(backgroundColor != transparentColor) setPixel(xa, ya, backgroundColor);
             }
         }
     }
-
+    
+    public void fillBackgroundColor(int xp, int yp, int w, int h, int color){
+        if(color == transparentColor) return;
+        for(int y = 0; y < h; y++){
+            int ya = y + yp;
+            for(int x = 0; x < w; x++){
+                int xa = x + xp;
+                setPixel(xa, ya, color);
+            }
+        }
+    }
+    
     public void write(String text, Font font, int xp, int yp){
-        if(text == null || text.length() == 0) return;
-        
-        for(int i = 0; i < text.length(); i++){
-            int c = font.getCharacters().indexOf(text.charAt(i));
+        write(text, font, xp, yp, transparentColor, transparentColor);
+    }
 
-            if(c < 0) continue;
-            int x = (c % 16);
-            int y = (c / 16);
-            
-            Sprite sprite = font.getCharacterSprite(x, y);
-            if(sprite == null) continue;
-            
-            drawSprite(sprite, xp + (i * font.getCharWidth()), yp);
+    public void write(String text, Font font, int xp, int yp, int foregroundColor){
+        write(text, font, xp, yp, foregroundColor, transparentColor);
+    }
+    
+    public void write(String text, Font font, int xp, int yp, int foregroundColor, int backgroundColor){
+        if(text == null || text.length() == 0) return;
+        int xa;
+        for(int i = 0; i < text.length(); i++){
+            Sprite sprite = font.getCharacterSprite(text.charAt(i));
+            xa = xp + (i * font.getCharWidth());
+            if(sprite == null) fillBackgroundColor(xa, yp, font.getCharWidth(), font.getCharHeight(), backgroundColor);
+            else drawSprite(sprite, xa, yp, foregroundColor, backgroundColor);
         }
     }
     
