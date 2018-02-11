@@ -1,10 +1,12 @@
 package com.mac.spe;
 
 import com.mac.spe.core.BaseGame;
+import com.mac.spe.graphics.Font;
+import com.mac.spe.graphics.Sprite;
+import com.mac.spe.graphics.Spritesheet;
+import com.mac.spe.io.ImageLoader;
 import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
-import com.mac.spe.graphics.*;
-import com.mac.spe.io.ImageLoader;
 
 import java.util.Random;
 
@@ -19,7 +21,7 @@ public class Game extends BaseGame {
     private Sprite wall2;
     private Sprite wall3;
 
-    int[][] tiles = new int[10][10];
+    int[][] tiles = new int[240][135];
     
     Font font;
     
@@ -35,8 +37,8 @@ public class Game extends BaseGame {
         wall2 = Sprite.cutFromSpritesheet(sheet, 0, 2, 16, 16);
         wall3 = Sprite.cutFromSpritesheet(sheet, 2, 2, 16, 16);
 
-        for(int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
+        for(int y = 0; y < 135; y++) {
+            for (int x = 0; x < 240; x++) {
                 tiles[x][y] = random.nextInt(3);
             }
         }
@@ -49,9 +51,11 @@ public class Game extends BaseGame {
 
     Random random = new Random();
     
+    float t;
+    
     @Override
     public void render(Renderer renderer) {
-        renderer.clear(0xff00ff);
+        renderer.clear(0xd8ae65);
 
 //        renderer.drawSpriteColored(wall1, 20, 20, 0x4286f4);
         
@@ -72,7 +76,31 @@ public class Game extends BaseGame {
 //            }
 //        }
         
-        renderer.write("It's dangerous to go alone! Take this.", font, 5, 5, -1, -1);
+        Renderer.setRenderMode(RenderMode.TILED);
+        for(int y = 0; y < 100; y++) {
+            for (int x = 0; x < 100; x++) {
+                switch (tiles[x][y]) {
+                    case 0:
+                        renderer.drawSprite(wall1, x, y);
+                        break;
+                    case 1:
+                        renderer.drawSprite(wall2, x, y);
+                        break;
+                    case 2:
+                        renderer.drawSprite(wall3, x, y);
+                        break;
+                }
+            }
+        }
+        Renderer.setRenderMode(RenderMode.PRECISE);
+        
+        t += 0.03f;
+
+        int x = (int) (Math.sin(t) * 100);
+        int y = (int) (Math.cos(t) * 100);
+
+        renderer.write("It's dangerous to go alone! Take this.", font, x + 70, y + 70, 0xff0000);
+
         
     }
 }

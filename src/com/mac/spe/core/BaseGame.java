@@ -12,4 +12,5 @@ public abstract class BaseGame {
     public abstract void init();
     public abstract boolean update();
     public abstract void render(Renderer renderer);
+ 
 }

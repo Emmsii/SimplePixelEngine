@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public abstract class Bitmap {
     
     protected final int width, height;
-    protected final int[] pixels;
+    protected int[] pixels;
     
     public Bitmap(BufferedImage image){
         this(image.getWidth(), image.getHeight(), new int[image.getWidth() * image.getHeight()]);
@@ -40,6 +40,10 @@ public abstract class Bitmap {
         pixels[x + y * width] = color;
     }
     
+    public void setPixels(int[] pixels){
+        this.pixels = pixels;
+    }
+    
     public int getPixel(int x, int y){
         return getPixel(x + y * width);
     }
@@ -54,7 +58,7 @@ public abstract class Bitmap {
     }
     
     public boolean inBounds(int x, int y){
-        return inBounds(x + y * width);
+        return x >= 0 && y >= 0 && x < width && y < height;
     }
     
     public boolean inBounds(int index){

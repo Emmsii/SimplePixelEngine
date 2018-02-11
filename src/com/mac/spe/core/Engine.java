@@ -15,14 +15,20 @@ public class Engine implements Runnable{
 
     private final int width, height;
     private final int scale;
+    private final String title;
 
     private Renderer renderer;
+//    private Panel panel;
     private Panel panel;
     private Terminal terminal;
     
     private Thread thread;
     private boolean running;
     private final double targetFps;
+
+    public Engine(BaseGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps){
+        this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps);
+    }
     
     public Engine(BaseGame game, String title, int width, int height, int scale, double targetFps){
         if(game == null) throw new IllegalArgumentException("Cannot create a new Engine instance with a null game.");
@@ -36,16 +42,17 @@ public class Engine implements Runnable{
         this.width = width;
         this.height = height;
         this.scale = scale;
+        this.title = title;
         this.targetFps = targetFps;
         
         renderer = new Renderer(width, height);
+//        panel = new Panel(width, height, scale, renderer);
         panel = new Panel(width, height, scale, renderer);
-        terminal = new Terminal(title, panel);
+        terminal = new Terminal(title + " | 0fps", panel);
         
         running = false;
     }
     
-
     public void init(){
         game.init();
     }
@@ -55,8 +62,16 @@ public class Engine implements Runnable{
     }
     
     public void render(){
+        
+        double gr = System.nanoTime();
         game.render(renderer);
-        terminal.repaint();
+        double grend = System.nanoTime() - gr;
+        double er = System.nanoTime();
+        panel.render();
+        double erend = System.nanoTime() - er;
+//        terminal.repaint();
+        
+        System.out.println("Game Rendered in " + grend / 1000000 + "ms | Engine rendered in " + erend / 1000000 + "ms");
     }
     
     public synchronized void start(){
@@ -103,7 +118,7 @@ public class Engine implements Runnable{
                 unprocessedTime -= 1;
 
                 shouldRender = update();
-                
+
                 if(shouldRender){
                     render();
                     frames++;
@@ -111,6 +126,7 @@ public class Engine implements Runnable{
 
                 if(System.currentTimeMillis() > lastFrameTime + 1000){
                     System.out.println(frames + "fps");
+                    terminal.setTitle(title + " | " + frames + "fps");
                     lastFrameTime += 1000;
                     frames = 0;
                 }
