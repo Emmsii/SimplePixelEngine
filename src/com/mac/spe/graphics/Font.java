@@ -90,7 +90,7 @@ public class Font extends Spritesheet{
     
     public Sprite getCharacterSprite(char c){
         int charIndex = chars.indexOf(c);
-        if(charIndex < 0) return nullSprite; // TODO: Return a default, empty sprite.
+        if(charIndex < 0) return nullSprite;
         return getCharacterSprite(charIndex % 16, charIndex / 16);
     }
     

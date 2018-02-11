@@ -1,5 +1,7 @@
 package com.mac.spe.core;
 
+import com.mac.spe.input.Input;
+import com.mac.spe.input.InputHandler;
 import com.mac.spe.rendering.Renderer;
 import com.mac.spe.window.Panel;
 import com.mac.spe.window.Terminal;
@@ -18,7 +20,6 @@ public class Engine implements Runnable{
     private final String title;
 
     private Renderer renderer;
-//    private Panel panel;
     private Panel panel;
     private Terminal terminal;
     
@@ -26,6 +27,9 @@ public class Engine implements Runnable{
     private boolean running;
     private final double targetFps;
     private final boolean uncappedFrameRate;
+
+    private Input input;
+    private InputHandler inputHandler;
 
     public Engine(IGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
         this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps, uncappedFrameRate);
@@ -50,30 +54,26 @@ public class Engine implements Runnable{
         renderer = new Renderer(width, height);
         panel = new Panel(width, height, scale, renderer);
         terminal = new Terminal(title + " | 0fps", panel);
-        
+
+        inputHandler = new InputHandler();
+        input = new Input(inputHandler);
+
+        panel.addKeyListener(inputHandler);
+
         running = false;
     }
 
-    
     public void init(){
         game.init();
     }
     
     public boolean update(){
-        return game.update();    
+        return game.update(input);
     }
     
     public void render(){
-        
-        double gr = System.nanoTime();
         game.render(renderer);
-        double grend = System.nanoTime() - gr;
-        double er = System.nanoTime();
         panel.render();
-        double erend = System.nanoTime() - er;
-//        terminal.repaint();
-        
-//        System.out.println("Game Rendered in " + grend / 1000000 + "ms | Engine rendered in " + erend / 1000000 + "ms");
     }
     
     public synchronized void start(){
@@ -104,6 +104,7 @@ public class Engine implements Runnable{
         long lastTime = System.nanoTime();
         long lastFrameTime = System.currentTimeMillis();
         int frames = 0;
+        int updates = 0;
 
         while (running) {
             long now = System.nanoTime();
@@ -119,6 +120,7 @@ public class Engine implements Runnable{
             while (unprocessedTime > 1) {
                 unprocessedTime -= 1;
                 shouldRender = update();
+                updates++;
             }
 
             if (shouldRender || uncappedFrameRate) {
@@ -127,10 +129,11 @@ public class Engine implements Runnable{
             }
 
             if (System.currentTimeMillis() > lastFrameTime + 1000) {
-                System.out.println(frames + " fps");
-                terminal.setTitle(title + " | " + frames + "fps");
+                System.out.println(frames + "fps " + updates + "ups");
+                terminal.setTitle(title + " | " + frames + "fps " + updates + "ups");
                 lastFrameTime += 1000;
                 frames = 0;
+                updates = 0;
             }
 
             try {
@@ -138,56 +141,17 @@ public class Engine implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            swap();
         }
-        
-//        double nsPerFrame = 1000000000.0 / targetFps;
-//        double unprocessedTime = 0;
-//        double maxSkipFrames = 10;
-//
-//        long lastTime = System.nanoTime();
-//        long lastFrameTime = System.currentTimeMillis();
-//        int frames = 0;
-//
-//        while(running){
-//            long now = System.nanoTime();
-//            double passedTime = (now - lastTime) / nsPerFrame;
-//            lastTime = now;
-//
-//            if(passedTime < -maxSkipFrames) passedTime = -maxSkipFrames;
-//            if(passedTime > maxSkipFrames) passedTime = maxSkipFrames;
-//
-//            unprocessedTime += passedTime;
-//
-//            boolean shouldRender;
-//            while(unprocessedTime > 1){
-//                unprocessedTime -= 1;
-//
-//                shouldRender = update();
-//
-//                if(shouldRender){
-//                    render();
-//                    frames++;
-//                }
-//
-//                if(System.currentTimeMillis() > lastFrameTime + 1000){
-//                    System.out.println(frames + "fps");
-//                    terminal.setTitle(title + " | " + frames + "fps");
-//                    lastFrameTime += 1000;
-//                    frames = 0;
-//                }
-//            }
-//        }
     }
-    
+
     public int getWidth(){
         return width;
     }
-    
+
     public int getHeight(){
         return height;
     }
-    
+
     public int getScale(){
         return scale;
     }

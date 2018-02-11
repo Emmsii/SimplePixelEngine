@@ -13,13 +13,14 @@ import com.mac.spe.helpers.ColorHelper;
 public class Renderer extends Bitmap {
 
     /**
-     * Setting the override colors in the drawSprite methods to
-     * this value will result in the colors being ignored.
+     * Setting the foreground or background colors in the drawSprite
+     * methods to this value will result in the colors being ignored
+     * and not used.
      */
     public static int ignoreColor = -1;
 
     /**
-     * Pixels that are this exact color will be ignored.
+     * Pixels of this exact color will be considered transparent.
      */
     public static int transparentColor = -1;
 
@@ -34,6 +35,11 @@ public class Renderer extends Bitmap {
      */
     private RenderMode renderMode = RenderMode.PRECISE;
 
+    /**
+     * Constructor for renderer class.
+     * @param width The width in pixels of the screen.
+     * @param height The height in pixels of the screen.
+     */
     public Renderer(int width, int height){
         super(width, height);
     }
@@ -199,15 +205,48 @@ public class Renderer extends Bitmap {
             }
         }
     }
-    
+
+    /**
+     * Draw a string to the screen. If the position of the characters
+     * is out of screen bounds, they will be ignored. The text color
+     * will be the same as is on the Font spritesheet. The {@link Renderer#renderMode}
+     * effects the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     */
     public void write(String text, Font font, int xp, int yp){
         write(text, font, xp, yp, ignoreColor, ignoreColor);
     }
 
+    /**
+     * Draw a string to the screen. If the position of the characters
+     * is out of screen bounds, they will be ignored. The text color
+     * is specified by the foregroundColor parameter. The {@link Renderer#renderMode}
+     * effects the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     * @param foregroundColor The hex color of the font.
+     */
     public void write(String text, Font font, int xp, int yp, int foregroundColor){
         write(text, font, xp, yp, foregroundColor, ignoreColor);
     }
-        
+
+    /**
+     * Draw a string to the screen. If the position of the characters
+     * is out of screen bounds, they will be ignored. The text foreground
+     * and background colors are specified as parameters. The {@link Renderer#renderMode}
+     * effects the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     * @param foregroundColor The hex color of the font.
+     * @param backgroundColor The hex color of the background of each character.
+     */
     public void write(String text, Font font, int xp, int yp, int foregroundColor, int backgroundColor){
         if(text == null || text.length() == 0) return;
         
@@ -219,8 +258,66 @@ public class Renderer extends Bitmap {
         }
     }
 
-    public void writeCenter(String text, Font font, int yp){
-        
+    /**
+     * Draw a string to the screen. The position of the characters
+     * will be offset by half the length of the text multiplied by
+     * the character width, the text will centered around the x position.
+     * If the position of the characters is out of screen bounds,
+     * they will be ignored. The text color will be the same as is
+     * on the Font spritesheet. The {@link Renderer#renderMode}
+     * effects the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     */
+    public void writeCenter(String text, Font font, int xp, int yp){
+        writeCenter(text, font, xp, yp, ignoreColor, ignoreColor);
+    }
+
+    /**
+     * Draw a string to the screen. The position of the characters
+     * will be offset by half the length of the text multiplied by
+     * the character width, the text will centered around the x position.
+     * If the position of the characters is out of screen bounds,
+     * they will be ignored. The text color is specified by the
+     * foregroundColor parameter. The {@link Renderer#renderMode} effects
+     * the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     * @param foregroundColor The hex color of the font.
+     */
+    public void writeCenter(String text, Font font, int xp, int yp, int foregroundColor){
+        writeCenter(text, font, xp, yp, foregroundColor, ignoreColor);
+    }
+
+    /**
+     * Draw a string to the screen. The position of the characters
+     * will be offset by half the length of the text multiplied by
+     * the character width, the text will centered around the x position.
+     * If the position of the characters is out of screen bounds,
+     * they will be ignored. The text foreground and background colors
+     * are specified as parameters. The {@link Renderer#renderMode} effects
+     * the positioning of the text.
+     * @param text The string to draw to the screen.
+     * @param font The font to use.
+     * @param xp The x position of the text.
+     * @param yp The y position of the text.
+     * @param foregroundColor The hex color of the font.
+     * @param backgroundColor The hex color of the background of each character.
+     */
+    public void writeCenter(String text, Font font, int xp, int yp, int foregroundColor, int backgroundColor){
+        if(text == null || text.length() == 0) return;
+
+        for(int i = 0; i < text.length(); i++){
+            Sprite sprite = font.getCharacterSprite(text.charAt(i));
+            int xa = xp + (renderMode == RenderMode.PRECISE ? i * font.getCharWidth() : i)
+                    - ((text.length() / 2) * font.getCharWidth());
+            if(sprite == null) continue;
+            drawSpriteColored(sprite, xa, yp, foregroundColor, backgroundColor);
+        }
     }
     
     /**

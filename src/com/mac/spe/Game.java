@@ -4,10 +4,12 @@ import com.mac.spe.core.IGame;
 import com.mac.spe.graphics.Font;
 import com.mac.spe.graphics.Sprite;
 import com.mac.spe.graphics.Spritesheet;
+import com.mac.spe.input.Input;
 import com.mac.spe.io.ImageLoader;
 import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
 
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
 /**
@@ -43,7 +45,12 @@ public class Game implements IGame {
     }
 
     @Override
-    public boolean update() {
+    public boolean update(Input input) {
+
+        if(input.isKeyDown(KeyEvent.VK_W)){
+            t += 0.02f;
+        }
+
         return true;
     }
 
@@ -91,14 +98,10 @@ public class Game implements IGame {
             }
         }
         renderer.setRenderMode(RenderMode.PRECISE);
-        
-        t += 0.03f;
 
         int x = (int) (Math.sin(t) * 100);
         int y = (int) (Math.cos(t) * 100);
 
-        renderer.write("It's dangerous to go alone! Take this.", font, x + 70, y + 70, 0xff0000);
-
-        
+        renderer.write("It's dangerous to go alone! Take this.", font, x, y, 0x0000ff);
     }
 }
