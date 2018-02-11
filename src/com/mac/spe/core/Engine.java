@@ -25,12 +25,13 @@ public class Engine implements Runnable{
     private Thread thread;
     private boolean running;
     private final double targetFps;
+    private final boolean uncappedFrameRate;
 
-    public Engine(BaseGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps){
-        this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps);
+    public Engine(BaseGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
+        this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps, uncappedFrameRate);
     }
     
-    public Engine(BaseGame game, String title, int width, int height, int scale, double targetFps){
+    public Engine(BaseGame game, String title, int width, int height, int scale, double targetFps, boolean uncappedFrameRate){
         if(game == null) throw new IllegalArgumentException("Cannot create a new Engine instance with a null game.");
         if(targetFps <= 0) throw new IllegalArgumentException("Target FPS must be greater than 0.");
 
@@ -44,14 +45,15 @@ public class Engine implements Runnable{
         this.scale = scale;
         this.title = title;
         this.targetFps = targetFps;
+        this.uncappedFrameRate = uncappedFrameRate;
         
         renderer = new Renderer(width, height);
-//        panel = new Panel(width, height, scale, renderer);
         panel = new Panel(width, height, scale, renderer);
         terminal = new Terminal(title + " | 0fps", panel);
         
         running = false;
     }
+
     
     public void init(){
         game.init();
@@ -71,7 +73,7 @@ public class Engine implements Runnable{
         double erend = System.nanoTime() - er;
 //        terminal.repaint();
         
-        System.out.println("Game Rendered in " + grend / 1000000 + "ms | Engine rendered in " + erend / 1000000 + "ms");
+//        System.out.println("Game Rendered in " + grend / 1000000 + "ms | Engine rendered in " + erend / 1000000 + "ms");
     }
     
     public synchronized void start(){
@@ -103,35 +105,79 @@ public class Engine implements Runnable{
         long lastFrameTime = System.currentTimeMillis();
         int frames = 0;
 
-        while(running){
+        while (running) {
             long now = System.nanoTime();
             double passedTime = (now - lastTime) / nsPerFrame;
             lastTime = now;
 
-            if(passedTime < -maxSkipFrames) passedTime = -maxSkipFrames;
-            if(passedTime > maxSkipFrames) passedTime = maxSkipFrames;
+            if (passedTime < -maxSkipFrames) passedTime = -maxSkipFrames;
+            if (passedTime > maxSkipFrames) passedTime = maxSkipFrames;
 
             unprocessedTime += passedTime;
 
-            boolean shouldRender;
-            while(unprocessedTime > 1){
+            boolean shouldRender = false;
+            while (unprocessedTime > 1) {
                 unprocessedTime -= 1;
-
                 shouldRender = update();
-
-                if(shouldRender){
-                    render();
-                    frames++;
-                }
-
-                if(System.currentTimeMillis() > lastFrameTime + 1000){
-                    System.out.println(frames + "fps");
-                    terminal.setTitle(title + " | " + frames + "fps");
-                    lastFrameTime += 1000;
-                    frames = 0;
-                }
             }
+
+            if (shouldRender || uncappedFrameRate) {
+                render();
+                frames++;
+            }
+
+            if (System.currentTimeMillis() > lastFrameTime + 1000) {
+                System.out.println(frames + " fps");
+                terminal.setTitle(title + " | " + frames + "fps");
+                lastFrameTime += 1000;
+                frames = 0;
+            }
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            swap();
         }
+        
+//        double nsPerFrame = 1000000000.0 / targetFps;
+//        double unprocessedTime = 0;
+//        double maxSkipFrames = 10;
+//
+//        long lastTime = System.nanoTime();
+//        long lastFrameTime = System.currentTimeMillis();
+//        int frames = 0;
+//
+//        while(running){
+//            long now = System.nanoTime();
+//            double passedTime = (now - lastTime) / nsPerFrame;
+//            lastTime = now;
+//
+//            if(passedTime < -maxSkipFrames) passedTime = -maxSkipFrames;
+//            if(passedTime > maxSkipFrames) passedTime = maxSkipFrames;
+//
+//            unprocessedTime += passedTime;
+//
+//            boolean shouldRender;
+//            while(unprocessedTime > 1){
+//                unprocessedTime -= 1;
+//
+//                shouldRender = update();
+//
+//                if(shouldRender){
+//                    render();
+//                    frames++;
+//                }
+//
+//                if(System.currentTimeMillis() > lastFrameTime + 1000){
+//                    System.out.println(frames + "fps");
+//                    terminal.setTitle(title + " | " + frames + "fps");
+//                    lastFrameTime += 1000;
+//                    frames = 0;
+//                }
+//            }
+//        }
     }
     
     public int getWidth(){

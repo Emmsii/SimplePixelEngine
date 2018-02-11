@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public abstract class Bitmap {
     
+    
     protected final int width, height;
     protected int[] pixels;
     
@@ -40,6 +41,11 @@ public abstract class Bitmap {
         pixels[x + y * width] = color;
     }
     
+    public void setPixel(int index, int color){
+        if(!inBounds(index)) return;
+        pixels[index] = color;
+    }
+    
     public void setPixels(int[] pixels){
         this.pixels = pixels;
     }
@@ -64,4 +70,5 @@ public abstract class Bitmap {
     public boolean inBounds(int index){
         return index >= 0 && index < pixels.length;
     }
+
 }

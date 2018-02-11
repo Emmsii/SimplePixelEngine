@@ -32,8 +32,8 @@ public class Renderer extends Bitmap {
      * If the sprite width and height is 8 and x = 3, y = 5 then the
      * sprite will be drawn at x = 24, y = 40.
      */
-    private static RenderMode renderMode = RenderMode.PRECISE;
-    
+    private RenderMode renderMode = RenderMode.PRECISE;
+
     public Renderer(int width, int height){
         super(width, height);
     }
@@ -54,7 +54,7 @@ public class Renderer extends Bitmap {
             xp *= sprite.getWidth();
             yp *= sprite.getHeight();
         }
-
+        
         for (int y = 0; y < sprite.getHeight(); y++) {
             int ya = y + yp;
             for (int x = 0; x < sprite.getWidth(); x++) {
@@ -64,6 +64,7 @@ public class Renderer extends Bitmap {
                 else if (backgroundColor != ignoreColor) setPixel(xa, ya, backgroundColor);
             }
         }
+        
     }
 
     /**
@@ -173,53 +174,7 @@ public class Renderer extends Bitmap {
             }
         }
     }
-    
-//    public void drawSprite(Sprite sprite, int xp, int yp){
-//        drawSprite(sprite, xp, yp, ignoreColor, ignoreColor);
-//    }
-//    
-//    public void drawSprite(Sprite sprite, int xp, int yp, int foregroundColor){
-//        drawSprite(sprite, xp, yp, foregroundColor, ignoreColor);
-//    }
-//    
-//    public void drawSprite(Sprite sprite, int xp, int yp, int foregroundColor, int backgroundColor){
-//        if(renderMode == RenderMode.TILED){
-//            xp *= sprite.getWidth();
-//            yp *= sprite.getHeight();
-//        }
-//        
-//        for(int y = 0; y < sprite.getHeight(); y++){
-//            int ya = y + yp;
-//            for(int x = 0; x < sprite.getWidth(); x++){
-//                int xa = x + xp;
-//                int col = sprite.getPixel(x, y);
-//                if(col != transparentColor) setPixel(xa, ya, foregroundColor == ignoreColor ? col : foregroundColor);
-//                else if(backgroundColor != ignoreColor) setPixel(xa, ya, backgroundColor);
-//            }
-//        }
-//    }
-//    
-//    public void drawSpriteBlended(Sprite sprite, int xp, int yp, int blendColor, float factor){
-//        drawSpriteBlended(sprite, xp, yp, blendColor, factor, ignoreColor, ignoreColor);        
-//    }
-//    
-//    public void drawSpriteBlended(Sprite sprite, int xp, int yp, int blendColor, float factor, int foregroundColor, int backgroundColor){
-//        if(renderMode == RenderMode.TILED){
-//            xp *= sprite.getWidth();
-//            yp *= sprite.getHeight();
-//        }
-//
-//        for(int y = 0; y < sprite.getHeight(); y++){
-//            int ya = y + yp;
-//            for(int x = 0; x < sprite.getWidth(); x++){
-//                int xa = x + xp;
-//                int col = sprite.getPixel(x, y);
-//                if(col != transparentColor) setPixel(xa, ya, ColorHelper.blend(foregroundColor == ignoreColor ? col : foregroundColor, blendColor, factor));
-//                else if(backgroundColor != ignoreColor) setPixel(xa, ya, ColorHelper.blend(backgroundColor, blendColor, factor));
-//            }
-//        }
-//    }
-
+   
     /**
      * Fills a area with a specific color. The renderMode
      * setting effects the positioning of this method.
@@ -264,6 +219,10 @@ public class Renderer extends Bitmap {
         }
     }
 
+    public void writeCenter(String text, Font font, int yp){
+        
+    }
+    
     /**
      * Clear the screen with black.
      */
@@ -276,7 +235,7 @@ public class Renderer extends Bitmap {
      * @param color The hex color to clear the screen with.
      */
     public void clear(int color){
-        for(int i = 0; i < pixels.length; i++) pixels[i] = color;
+        for(int i = 0; i < pixels.length; i++) setPixel(i, color);
     }
 
     /**
@@ -284,8 +243,8 @@ public class Renderer extends Bitmap {
      * doc on what renderMode does.
      * @param renderMode
      */
-    public static void setRenderMode(RenderMode renderMode){
-        Renderer.renderMode = renderMode;
+    public void setRenderMode(RenderMode renderMode){
+        this.renderMode = renderMode;
     }
     
 }

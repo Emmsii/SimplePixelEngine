@@ -28,15 +28,13 @@ public class Game extends BaseGame {
     @Override
     public void init() {
         
-        Renderer.setRenderMode(RenderMode.PRECISE);
-        
-        font = new Font(ImageLoader.load("res/font2.png"), 8, 16, '?');
+        font = new Font(ImageLoader.load("res/font.png"), 8, 16, '?');
         
         Spritesheet sheet = new Spritesheet(ImageLoader.load("res/tiles.png"));
-        wall1 = Sprite.cutFromSpritesheet(sheet, 0, 0, 16, 16);
-        wall2 = Sprite.cutFromSpritesheet(sheet, 0, 2, 16, 16);
-        wall3 = Sprite.cutFromSpritesheet(sheet, 2, 2, 16, 16);
-
+        wall1 = Sprite.cutFromSpritesheet(sheet, 0, 0, 16, 16).overrideColors(0x00ff00, -1);
+        wall2 = Sprite.cutFromSpritesheet(sheet, 0, 2, 16, 16).overrideColors(-1, -1);
+        wall3 = Sprite.cutFromSpritesheet(sheet, 2, 2, 16, 16).overrideColors(-1, -1);
+        
         for(int y = 0; y < 135; y++) {
             for (int x = 0; x < 240; x++) {
                 tiles[x][y] = random.nextInt(3);
@@ -76,7 +74,7 @@ public class Game extends BaseGame {
 //            }
 //        }
         
-        Renderer.setRenderMode(RenderMode.TILED);
+        renderer.setRenderMode(RenderMode.TILED);
         for(int y = 0; y < 100; y++) {
             for (int x = 0; x < 100; x++) {
                 switch (tiles[x][y]) {
@@ -92,7 +90,7 @@ public class Game extends BaseGame {
                 }
             }
         }
-        Renderer.setRenderMode(RenderMode.PRECISE);
+        renderer.setRenderMode(RenderMode.PRECISE);
         
         t += 0.03f;
 

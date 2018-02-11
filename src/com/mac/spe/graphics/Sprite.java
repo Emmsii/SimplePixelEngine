@@ -1,5 +1,7 @@
 package com.mac.spe.graphics;
 
+import com.mac.spe.rendering.Renderer;
+
 /**
  * Project: SimplePixelEngine
  * PC
@@ -28,7 +30,17 @@ public class Sprite extends Bitmap{
         return new Sprite(w, h, spritePixels);
     }
     
-    public ColoredSprite convertToColoredSprite(int foregroundColor, int backgroundColor){
-        return new ColoredSprite(width, height, pixels, foregroundColor, backgroundColor);
+    public Sprite overrideColors(int foregroundColor, int backgroundColor){
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++) {
+                int col = getPixel(x, y);
+                if (col == Renderer.transparentColor && backgroundColor != -1) setPixel(x, y, backgroundColor);
+                else if (col != Renderer.transparentColor && foregroundColor != -1) setPixel(x, y, foregroundColor);
+                else setPixel(x, y, col);
+            }
+        }
+        
+        return this;
     }
+    
 }
