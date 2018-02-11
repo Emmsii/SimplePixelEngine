@@ -11,7 +11,7 @@ import com.mac.spe.window.Terminal;
  */
 public class Engine implements Runnable{
     
-    private final BaseGame game;
+    private final IGame game;
 
     private final int width, height;
     private final int scale;
@@ -27,11 +27,11 @@ public class Engine implements Runnable{
     private final double targetFps;
     private final boolean uncappedFrameRate;
 
-    public Engine(BaseGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
+    public Engine(IGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
         this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps, uncappedFrameRate);
     }
     
-    public Engine(BaseGame game, String title, int width, int height, int scale, double targetFps, boolean uncappedFrameRate){
+    public Engine(IGame game, String title, int width, int height, int scale, double targetFps, boolean uncappedFrameRate){
         if(game == null) throw new IllegalArgumentException("Cannot create a new Engine instance with a null game.");
         if(targetFps <= 0) throw new IllegalArgumentException("Target FPS must be greater than 0.");
 

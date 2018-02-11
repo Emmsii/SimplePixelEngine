@@ -7,10 +7,10 @@ import com.mac.spe.rendering.Renderer;
  * PC
  * Created by Matt on 07/02/2018 at 06:18 PM.
  */
-public abstract class BaseGame {
+public interface IGame {
     
-    public abstract void init();
-    public abstract boolean update();
-    public abstract void render(Renderer renderer);
+    void init();
+    boolean update();
+    void render(Renderer renderer);
  
 }

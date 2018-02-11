@@ -15,10 +15,10 @@ public class Main {
         double fps = 60.0;
         Game game = new Game();
 //        Engine engine = new Engine(game, "Pixel Engine", 240, 135, 8, 8, 1, fps);
-//        Engine engine = new Engine(game, "Pixel Engine", 240, 135, scale, fps, false);
+        Engine engine = new Engine(game, "Pixel Engine", 240, 135, scale, fps, false);
 //        Engine engine = new Engine(game, "Pixel Engine", 480, 270, scale, fps);
 //        Engine engine = new Engine(game, "Pixel Engine", 960, 540, scale, fps);
-        Engine engine = new Engine(game, "Pixel Engine", 1920, 1080, 1, fps, false);
+//        Engine engine = new Engine(game, "Pixel Engine", 1920, 1080, 1, fps, false);
         engine.start();
 
         Renderer.transparentColor = 0xff000000;
