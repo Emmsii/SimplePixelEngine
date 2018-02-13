@@ -24,7 +24,7 @@ public class Engine implements Runnable{
     private Terminal terminal;
     
     private Thread thread;
-    private boolean running;
+    private boolean running = false;
     private final double targetFps;
     private final boolean uncappedFrameRate;
 
@@ -59,8 +59,8 @@ public class Engine implements Runnable{
         input = new Input(inputHandler);
 
         panel.addKeyListener(inputHandler);
-
-        running = false;
+        panel.addMouseListener(inputHandler);
+        panel.addMouseMotionListener(inputHandler);
     }
 
     public void init(){

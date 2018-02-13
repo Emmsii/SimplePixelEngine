@@ -11,4 +11,8 @@ public class Input {
     public boolean isKeyDown(int keyCode){
         return inputHandler.isKeyDown(keyCode);
     }
+
+    public boolean isMouseButtonDown(int mouseButton){
+        return inputHandler.isMouseButtonDown(mouseButton);
+    }
 }

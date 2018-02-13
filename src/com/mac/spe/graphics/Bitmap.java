@@ -8,8 +8,7 @@ import java.awt.image.BufferedImage;
  * Created by Matt on 07/02/2018 at 06:48 PM.
  */
 public abstract class Bitmap {
-    
-    
+
     protected final int width, height;
     protected int[] pixels;
     

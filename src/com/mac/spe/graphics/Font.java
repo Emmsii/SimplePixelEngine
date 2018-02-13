@@ -9,6 +9,10 @@ import java.awt.image.BufferedImage;
  */
 public class Font extends Spritesheet{
 
+    public static final byte ALIGN_LEFT = 0;
+    public static final byte ALIGN_CENTER = 1;
+    public static final byte ALIGN_RIGHT = 2;
+
     private final int charWidth, charHeight;
     private String chars = "0123456789ABCDEF" +
                            "GHIJKLMNOPQRSTUV" +

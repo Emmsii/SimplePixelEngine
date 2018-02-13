@@ -10,6 +10,7 @@ import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 /**
@@ -51,6 +52,17 @@ public class Game implements IGame {
             t += 0.02f;
         }
 
+        if(input.isMouseButtonDown(MouseEvent.BUTTON1)){
+            System.out.println("B1");
+        }
+
+        if(input.isMouseButtonDown(MouseEvent.BUTTON2)){
+            System.out.println("B2");
+        }
+
+        if(input.isMouseButtonDown(MouseEvent.BUTTON3)){
+            System.out.println("B3");
+        }
         return true;
     }
 
@@ -102,6 +114,6 @@ public class Game implements IGame {
         int x = (int) (Math.sin(t) * 100);
         int y = (int) (Math.cos(t) * 100);
 
-        renderer.write("It's dangerous to go alone! Take this.", font, x, y, 0x0000ff);
+        renderer.write("It's dangerous to go alone! Take this.", font, x, y, 0x0000ff, -1, Font.ALIGN_RIGHT);
     }
 }
