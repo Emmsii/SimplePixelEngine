@@ -1,46 +1,53 @@
 package com.mac.spe.graphics;
 
-import com.mac.spe.rendering.Renderer;
-
 /**
  * Project: SimplePixelEngine
  * PC
  * Created by Matt on 07/02/2018 at 06:53 PM.
  */
-public class Sprite extends Bitmap{
-    
-    public Sprite(int width, int height, int[] pixels) {
-        super(width, height, pixels);
+public class Sprite {
+
+    private final Spritesheet spritesheet;
+    private final int x, y;
+    private final int xIndex, yIndex;
+    private final int width, height;
+
+    public Sprite(Spritesheet spritesheet, int x, int y, int width, int height){
+        this.spritesheet = spritesheet;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        xIndex = x * width;
+        yIndex = y * height;
     }
-    
-    public static Sprite cutFromSpritesheet(Spritesheet sheet, int xp, int yp, int w, int h){
-        xp *= w;
-        yp *= h;
-        
-        int[] spritePixels = new int[w * h];
-        
-        for(int y = 0; y < h; y++){
-            int ya = y + yp;
-            for(int x = 0; x < w; x++){
-                int xa = x + xp;
-                spritePixels[x + y * w] = sheet.getPixel(xa, ya);
-            }
-        }
-        
-        return new Sprite(w, h, spritePixels);
+
+    public int getPixel(int xp, int yp){
+        return spritesheet.getPixel(xIndex + xp, yIndex + yp);
     }
-    
-    public Sprite overrideColors(int foregroundColor, int backgroundColor){
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++) {
-                int col = getPixel(x, y);
-                if (col == Renderer.transparentColor && backgroundColor != -1) setPixel(x, y, backgroundColor);
-                else if (col != Renderer.transparentColor && foregroundColor != -1) setPixel(x, y, foregroundColor);
-                else setPixel(x, y, col);
-            }
-        }
-        
-        return this;
+
+    public int getWidth(){
+        return width;
     }
-    
+
+    public int getHeight(){
+        return height;
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public int getXIndex(){
+        return xIndex;
+    }
+
+    public int getYIndex(){
+        return yIndex;
+    }
 }

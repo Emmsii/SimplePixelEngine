@@ -78,7 +78,7 @@ public class Font extends Spritesheet{
         
         for(int y = 0; y < charactersHigh; y++){
             for(int x = 0; x < charactersWide; x++){
-                sprites[x][y] = Sprite.cutFromSpritesheet(this, x, y, charWidth, charHeight);
+                sprites[x][y] = new Sprite(this, x, y, charWidth, charHeight);
             }
         }
     }

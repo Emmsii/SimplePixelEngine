@@ -1,16 +1,13 @@
 package com.mac.spe;
 
 import com.mac.spe.core.IGame;
-import com.mac.spe.graphics.Font;
-import com.mac.spe.graphics.Sprite;
-import com.mac.spe.graphics.Spritesheet;
+import com.mac.spe.graphics.*;
 import com.mac.spe.input.Input;
 import com.mac.spe.io.ImageLoader;
 import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.Random;
 
 /**
@@ -24,6 +21,8 @@ public class Game implements IGame {
     private Sprite wall2;
     private Sprite wall3;
 
+    private AnimatedSprite anSprite;
+
     int[][] tiles = new int[240][135];
     
     Font font;
@@ -34,10 +33,21 @@ public class Game implements IGame {
         font = new Font(ImageLoader.load("res/font.png"), 8, 16, '?');
         
         Spritesheet sheet = new Spritesheet(ImageLoader.load("res/tiles.png"));
-        wall1 = Sprite.cutFromSpritesheet(sheet, 0, 0, 16, 16).overrideColors(0x00ff00, -1);
-        wall2 = Sprite.cutFromSpritesheet(sheet, 0, 2, 16, 16).overrideColors(-1, -1);
-        wall3 = Sprite.cutFromSpritesheet(sheet, 2, 2, 16, 16).overrideColors(-1, -1);
-        
+//        wall1 = Sprite.cutFromSpritesheet(sheet, 0, 0, 16, 16).overrideColors(0x00ff00, -1);
+//        wall2 = Sprite.cutFromSpritesheet(sheet, 0, 2, 16, 16).overrideColors(-1, -1);
+//        wall3 = Sprite.cutFromSpritesheet(sheet, 2, 2, 16, 16).overrideColors(-1, -1);
+        wall1 = new Sprite(sheet, 0, 0, 16, 16);
+        wall2 = new Sprite(sheet, 0, 2, 16, 16);
+        wall3 = new Sprite(sheet, 2, 2, 16, 16);
+
+        anSprite = new AnimatedSpriteBuilder(font, 5)
+                .addFrame(3, 8, 8, 16)
+                .addFrame(4, 8, 8, 16)
+                .addFrame(5, 8, 8, 16)
+                .addFrame(6, 8, 8, 16)
+                .addFrame(7, 8, 8, 16)
+                .build();
+
         for(int y = 0; y < 135; y++) {
             for (int x = 0; x < 240; x++) {
                 tiles[x][y] = random.nextInt(3);
@@ -52,17 +62,8 @@ public class Game implements IGame {
             t += 0.02f;
         }
 
-        if(input.isMouseButtonDown(MouseEvent.BUTTON1)){
-            System.out.println("B1");
-        }
 
-        if(input.isMouseButtonDown(MouseEvent.BUTTON2)){
-            System.out.println("B2");
-        }
-
-        if(input.isMouseButtonDown(MouseEvent.BUTTON3)){
-            System.out.println("B3");
-        }
+        anSprite.update();
         return true;
     }
 
@@ -94,21 +95,27 @@ public class Game implements IGame {
 //        }
         
         renderer.setRenderMode(RenderMode.TILED);
-        for(int y = 0; y < 100; y++) {
-            for (int x = 0; x < 100; x++) {
-                switch (tiles[x][y]) {
-                    case 0:
-                        renderer.drawSprite(wall1, x, y);
-                        break;
-                    case 1:
-                        renderer.drawSprite(wall2, x, y);
-                        break;
-                    case 2:
-                        renderer.drawSprite(wall3, x, y);
-                        break;
-                }
-            }
-        }
+//        for(int y = 0; y < 100; y++) {
+//            for (int x = 0; x < 100; x++) {
+//                switch (tiles[x][y]) {
+//                    case 0:
+//                        renderer.drawSprite(wall1, x, y);
+//                        break;
+//                    case 1:
+//                        renderer.drawSprite(wall2, x, y);
+//                        break;
+//                    case 2:
+//                        renderer.drawSprite(wall3, x, y);
+//                        break;
+//                }
+//            }
+//        }
+
+        renderer.drawSpriteColored(anSprite, 0, 0, 0xff00ff);
+        renderer.drawSpriteColored(anSprite, 1, 1, 0x0000ff);
+        renderer.drawSpriteColored(anSprite, 2, 2, 0xff0000);
+        renderer.drawSpriteColored(anSprite, 3, 3, 0x00ff00);
+
         renderer.setRenderMode(RenderMode.PRECISE);
 
         int x = (int) (Math.sin(t) * 100);
