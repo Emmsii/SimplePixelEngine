@@ -1,4 +1,4 @@
-package com.mac.spe.graphics;
+package com.mac.spe.rendering.graphics;
 
 public class AnimatedSprite extends Sprite{
 

@@ -1,4 +1,4 @@
-package com.mac.spe.graphics;
+package com.mac.spe.rendering.graphics;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -30,7 +30,10 @@ public class Engine implements Runnable{
 
     private Input input;
     private InputHandler inputHandler;
-
+    
+    private boolean printFpsStats = false;
+    private int fps, ups;
+    
     public Engine(IGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
         this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps, uncappedFrameRate);
     }
@@ -53,9 +56,9 @@ public class Engine implements Runnable{
         
         renderer = new Renderer(width, height);
         panel = new Panel(width, height, scale, renderer);
-        terminal = new Terminal(title + " | 0fps", panel);
+        terminal = new Terminal(title, panel);
 
-        inputHandler = new InputHandler(scale);
+        inputHandler = new InputHandler(3, scale);
         input = new Input(inputHandler);
 
         panel.addKeyListener(inputHandler);
@@ -129,9 +132,10 @@ public class Engine implements Runnable{
             }
 
             if (System.currentTimeMillis() > lastFrameTime + 1000) {
-                System.out.println(frames + "fps " + updates + "ups");
-                terminal.setTitle(title + " | " + frames + "fps " + updates + "ups");
+                if(printFpsStats) System.out.println(frames + "fps " + updates + "ups");
                 lastFrameTime += 1000;
+                fps = frames;
+                ups = updates;
                 frames = 0;
                 updates = 0;
             }
@@ -142,6 +146,18 @@ public class Engine implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+    
+    public void setPrintFpsStats(boolean printFpsStats){
+        this.printFpsStats = printFpsStats;
+    }
+    
+    public int getFps(){
+        return fps;
+    }
+    
+    public int getUps(){
+        return ups;
     }
 
     public int getWidth(){

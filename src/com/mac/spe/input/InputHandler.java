@@ -5,15 +5,18 @@ import java.awt.event.*;
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener{
 
     private boolean[] keysDown = new boolean[65536];
-    private boolean[] mouseButtonsDown = new boolean[3];
+    private boolean[] mouseButtonsDown;
     private int mouseX, mouseY;
     private boolean mouseHasFocus = false;
 
     private final int windowScale;
     
-    public InputHandler(int windowScale){
+    public InputHandler(int numberOfMouseButtons, int windowScale){
         if(windowScale <= 0) throw new IllegalArgumentException("Window Scale must be greater than 0.");
+        this.mouseButtonsDown = new boolean[numberOfMouseButtons];
         this.windowScale = windowScale;
+        
+        if(numberOfMouseButtons <= 0) System.err.println("The number of mouse buttons is set to 0. Mouse button input will not work.");
     }
 
     public boolean isKeyDown(int keyCode){

@@ -1,9 +1,9 @@
 package com.mac.spe.rendering;
 
-import com.mac.spe.graphics.Bitmap;
-import com.mac.spe.graphics.Font;
-import com.mac.spe.graphics.Sprite;
 import com.mac.spe.helpers.ColorHelper;
+import com.mac.spe.rendering.graphics.Bitmap;
+import com.mac.spe.rendering.graphics.Font;
+import com.mac.spe.rendering.graphics.Sprite;
 
 /**
  * Project: SimplePixelEngine

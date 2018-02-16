@@ -1,11 +1,11 @@
 package com.mac.spe;
 
 import com.mac.spe.core.IGame;
-import com.mac.spe.graphics.*;
 import com.mac.spe.input.Input;
 import com.mac.spe.io.ImageLoader;
 import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
+import com.mac.spe.rendering.graphics.*;
 
 import java.awt.event.KeyEvent;
 import java.util.Random;

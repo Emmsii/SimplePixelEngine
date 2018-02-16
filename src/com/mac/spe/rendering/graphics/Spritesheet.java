@@ -1,4 +1,4 @@
-package com.mac.spe.graphics;
+package com.mac.spe.rendering.graphics;
 
 import java.awt.image.BufferedImage;
 
