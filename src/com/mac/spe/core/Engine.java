@@ -55,7 +55,7 @@ public class Engine implements Runnable{
         panel = new Panel(width, height, scale, renderer);
         terminal = new Terminal(title + " | 0fps", panel);
 
-        inputHandler = new InputHandler();
+        inputHandler = new InputHandler(scale);
         input = new Input(inputHandler);
 
         panel.addKeyListener(inputHandler);
@@ -79,7 +79,7 @@ public class Engine implements Runnable{
     public synchronized void start(){
         if(running) return;
         running = true;
-        thread = new Thread(this, "pixe-engine");
+        thread = new Thread(this, "pixel-engine");
         thread.start();
     }
     

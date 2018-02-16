@@ -4,12 +4,16 @@ import java.awt.event.*;
 
 public class InputHandler implements KeyListener, MouseListener, MouseMotionListener{
 
-    private boolean[] keysDown;
+    private boolean[] keysDown = new boolean[65536];
+    private boolean[] mouseButtonsDown = new boolean[3];
     private int mouseX, mouseY;
-    private int mouseButton;
+    private boolean mouseHasFocus = false;
 
-    public InputHandler(){
-        this.keysDown = new boolean[65536];
+    private final int windowScale;
+    
+    public InputHandler(int windowScale){
+        if(windowScale <= 0) throw new IllegalArgumentException("Window Scale must be greater than 0.");
+        this.windowScale = windowScale;
     }
 
     public boolean isKeyDown(int keyCode){
@@ -18,9 +22,30 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     }
 
     public boolean isMouseButtonDown(int mouseButton){
-        return mouseButton == mouseButton;
+        if(mouseButton >= 0 && mouseButton < mouseButtonsDown.length) return mouseButtonsDown[mouseButton];
+        return false;
+    }
+    
+    public boolean mouseHasFocus(){
+        return mouseHasFocus;
     }
 
+    public int getScaledMouseX(){
+        return mouseX == 0 ? 0 : mouseX / windowScale;
+    }
+    
+    public int getScaledMouseY(){
+        return mouseY == 0 ? 0 : mouseY / windowScale;
+    }
+    
+    public int getMouseX(){
+        return mouseX;
+    }
+    
+    public int getMouseY(){
+        return mouseY;
+    }
+    
     @Override
     public void keyTyped(KeyEvent keyEvent) {
 
@@ -38,27 +63,27 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        mouseButton = mouseEvent.getButton();
+        
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        mouseButton = mouseEvent.getButton();
+        if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        mouseButton = mouseEvent.getButton();
+        if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = false;
     }
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-
+        mouseHasFocus = true;
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-
+        mouseHasFocus = false;
     }
 
     @Override

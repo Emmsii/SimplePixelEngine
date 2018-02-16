@@ -15,4 +15,24 @@ public class Input {
     public boolean isMouseButtonDown(int mouseButton){
         return inputHandler.isMouseButtonDown(mouseButton);
     }
+
+    public boolean mouseHasFocus(){
+        return inputHandler.mouseHasFocus();
+    }
+
+    public int getScaledMouseX(){
+        return inputHandler.getScaledMouseX();
+    }
+
+    public int getScaledMouseY(){
+        return inputHandler.getScaledMouseY();
+    }
+
+    public int getMouseX(){
+        return inputHandler.getMouseX();
+    }
+
+    public int getMouseY(){
+        return inputHandler.getMouseY();
+    }
 }

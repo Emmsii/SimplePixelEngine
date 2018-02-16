@@ -13,12 +13,12 @@ public class Main {
     public static void main(String[] args){
         int scale = 2;
         double fps = 60.0;
-        Game game = new Game();
-//        Engine engine = new Engine(game, "Pixel Engine", 240, 135, 8, 8, 1, fps);
-        Engine engine = new Engine(game, "Pixel Engine", 240, 135, scale, 60.0, true);
-//        Engine engine = new Engine(game, "Pixel Engine", 480, 270, scale, fps);
-//        Engine engine = new Engine(game, "Pixel Engine", 960, 540, scale, fps);
-//        Engine engine = new Engine(game, "Pixel Engine", 1920, 1080, 1, fps, false);
+        TestGame testGame = new TestGame();
+//        Engine engine = new Engine(testGame, "Pixel Engine", 240, 135, 8, 8, 1, fps);
+        Engine engine = new Engine(testGame, "Pixel Engine", 240, 135, scale, 60.0, true);
+//        Engine engine = new Engine(testGame, "Pixel Engine", 480, 270, scale, fps);
+//        Engine engine = new Engine(testGame, "Pixel Engine", 960, 540, scale, fps);
+//        Engine engine = new Engine(testGame, "Pixel Engine", 1920, 1080, 1, fps, false);
         engine.start();
 
         Renderer.transparentColor = 0xff000000;
