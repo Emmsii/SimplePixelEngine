@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
  * PC
  * Created by Matt on 07/02/2018 at 06:48 PM.
  */
-public abstract class Bitmap {
+public abstract class Bitmap implements IDrawable{
 
     protected final int width, height;
     protected int[] pixels;
@@ -26,11 +26,13 @@ public abstract class Bitmap {
         this.height = height;
         this.pixels = pixels;
     }
-    
+
+    @Override
     public int getWidth(){
         return width;
     }
-    
+
+    @Override
     public int getHeight(){
         return height;
     }
@@ -48,7 +50,8 @@ public abstract class Bitmap {
     public void setPixels(int[] pixels){
         this.pixels = pixels;
     }
-    
+
+    @Override
     public int getPixel(int x, int y){
         return getPixel(x + y * width);
     }

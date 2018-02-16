@@ -2,12 +2,14 @@ package com.mac.spe;
 
 import com.mac.spe.core.IGame;
 import com.mac.spe.graphics.*;
+import com.mac.spe.helpers.StringHelper;
 import com.mac.spe.input.Input;
 import com.mac.spe.io.ImageLoader;
 import com.mac.spe.rendering.RenderMode;
 import com.mac.spe.rendering.Renderer;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -29,7 +31,14 @@ public class Game implements IGame {
     
     @Override
     public void init() {
-        
+
+        String input = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A arcu cursus vitae congue mauris rhoncus. Pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu. Aliquam etiam erat velit scelerisque in dictum. In arcu cursus euismod quis viverra nibh cras pulvinar. Viverra vitae congue eu consequat ac felis donec et odio. Metus aliquam eleifend mi in. Pellentesque massa placerat duis ultricies lacus. Molestie at elementum eu facilisis sed odio morbi quis. Erat imperdiet sed euismod nisi. Dictum non consectetur a erat nam at lectus urna. Est sit amet facilisis magna etiam.";
+        List<String> lines = StringHelper.stringToMultiline(input, 50, false);
+
+        for(String s : lines) System.out.println(s);
+
+        System.exit(0);
+
         font = new Font(ImageLoader.load("res/font.png"), 8, 16, '?');
         
         Spritesheet sheet = new Spritesheet(ImageLoader.load("res/tiles.png"));

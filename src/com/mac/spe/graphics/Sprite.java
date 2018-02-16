@@ -5,7 +5,7 @@ package com.mac.spe.graphics;
  * PC
  * Created by Matt on 07/02/2018 at 06:53 PM.
  */
-public class Sprite {
+public class Sprite implements IDrawable{
 
     private final Spritesheet spritesheet;
     private final int x, y;
@@ -23,14 +23,17 @@ public class Sprite {
         yIndex = y * height;
     }
 
+    @Override
     public int getPixel(int xp, int yp){
         return spritesheet.getPixel(xIndex + xp, yIndex + yp);
     }
 
+    @Override
     public int getWidth(){
         return width;
     }
 
+    @Override
     public int getHeight(){
         return height;
     }

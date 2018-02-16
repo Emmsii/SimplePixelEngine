@@ -36,7 +36,7 @@ public class Engine implements Runnable{
     }
     
     public Engine(IGame game, String title, int width, int height, int scale, double targetFps, boolean uncappedFrameRate){
-        if(game == null) throw new IllegalArgumentException("Cannot create a new Engine instance with a null game.");
+        if(game == null) throw new IllegalArgumentException("Cannot create a new Engine with a null game.");
         if(targetFps <= 0) throw new IllegalArgumentException("Target FPS must be greater than 0.");
 
         if(width <= 0) throw new IllegalArgumentException("Engine width must be greater than 0.");
@@ -79,7 +79,7 @@ public class Engine implements Runnable{
     public synchronized void start(){
         if(running) return;
         running = true;
-        thread = new Thread(this, "engine");
+        thread = new Thread(this, "pixe-engine");
         thread.start();
     }
     

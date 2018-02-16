@@ -70,7 +70,7 @@ public class Renderer extends Bitmap {
                 else if (backgroundColor != ignoreColor) setPixel(xa, ya, backgroundColor);
             }
         }
-        
+
     }
 
     /**
@@ -256,14 +256,6 @@ public class Renderer extends Bitmap {
      * @param backgroundColor The hex color of the background of each character.
      */
     public void write(String text, Font font, int xp, int yp, int foregroundColor, int backgroundColor){
-//        if(text == null || text.length() == 0) return;
-//
-//        for(int i = 0; i < text.length(); i++){
-//            Sprite sprite = font.getCharacterSprite(text.charAt(i));
-//            int xa = xp + (renderMode == RenderMode.PRECISE ? i * font.getCharWidth() : i);
-//            if(sprite == null) continue;
-//            drawSpriteColored(sprite, xa, yp, foregroundColor, backgroundColor);
-//        }
         write(text, font, xp, yp, foregroundColor, backgroundColor, Font.ALIGN_LEFT);
     }
 
