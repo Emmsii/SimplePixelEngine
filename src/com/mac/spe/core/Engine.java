@@ -33,26 +33,19 @@ public class Engine implements Runnable{
     
     private boolean printFpsStats = false;
     private int fps, ups;
-    
-    public Engine(IGame game, String title, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight, int scale, double targetFps, boolean uncappedFrameRate){
-        this(game, title, widthInTiles * tileWidth, heightInTiles * tileHeight, scale, targetFps, uncappedFrameRate);
-    }
-    
-    public Engine(IGame game, String title, int width, int height, int scale, double targetFps, boolean uncappedFrameRate){
-        if(game == null) throw new IllegalArgumentException("Cannot create a new Engine with a null game.");
-        if(targetFps <= 0) throw new IllegalArgumentException("Target FPS must be greater than 0.");
 
-        if(width <= 0) throw new IllegalArgumentException("Engine width must be greater than 0.");
-        if(height <= 0) throw new IllegalArgumentException("Engine height must be greater than 0.");
-        if(scale <= 0) throw new IllegalArgumentException("Engine scale must be greater than 0.");
-
+    public Engine(EngineConfig config, IGame game){
+        if(config == null) throw new IllegalArgumentException("Cannot create a new engine with a null config.");
+        if(game == null) throw new IllegalArgumentException("Cannot create a new engine with a null game.");
         this.game = game;
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.title = title;
-        this.targetFps = targetFps;
-        this.uncappedFrameRate = uncappedFrameRate;
+        this.width = config.getWidth();
+        this.height = config.getHeight();
+        this.scale = config.getScale();
+        this.title = config.getTitle();
+        this.targetFps = config.getTargetFramesPerSecond();
+        this.uncappedFrameRate = config.isUncappedFrameRate();
+                
+        if(uncappedFrameRate) System.err.println("Warning! Uncapped frame rate will ignore the return value of the update method.");
         
         renderer = new Renderer(width, height);
         panel = new Panel(width, height, scale, renderer);
@@ -68,9 +61,11 @@ public class Engine implements Runnable{
 
     public void init(){
         game.init();
+        render(); //Render a single frame to start.
     }
     
     public boolean update(){
+        input.update();
         return game.update(input);
     }
     
@@ -126,6 +121,7 @@ public class Engine implements Runnable{
                 updates++;
             }
 
+            //If uncapped, render all the time.
             if (shouldRender || uncappedFrameRate) {
                 render();
                 frames++;

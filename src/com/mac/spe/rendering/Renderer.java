@@ -3,7 +3,7 @@ package com.mac.spe.rendering;
 import com.mac.spe.helpers.ColorHelper;
 import com.mac.spe.rendering.graphics.Bitmap;
 import com.mac.spe.rendering.graphics.Font;
-import com.mac.spe.rendering.graphics.Sprite;
+import com.mac.spe.rendering.graphics.IDrawable;
 
 /**
  * Project: SimplePixelEngine
@@ -13,25 +13,26 @@ import com.mac.spe.rendering.graphics.Sprite;
 public class Renderer extends Bitmap {
 
     /**
-     * Setting the foreground or background colors in the drawSprite
+     * Setting the foreground or background colors in the draw
      * methods to this value will result in the colors being ignored
-     * and not used.
+     * and not used. The default is -1.
      */
     public static int ignoreColor = -1;
 
     /**
      * Pixels of this exact color will be considered transparent.
+     * The default is 0xff000000.
      */
-    public static int transparentColor = -1;
+    public static int transparentColor = 0xff000000;
 
     /**
-     * Determines the positioning of sprites when drawn.
-     * When the renderMode is set to {@link RenderMode#PRECISE}, sprites will
+     * Determines the positioning of drawables when drawn.
+     * When the renderMode is set to {@link RenderMode#PRECISE}, drawables will
      * draw at the precise position specified, eg x = 32, y = 102.
      * When the renderMode is set to {@link RenderMode#TILED}, the position
-     * specified will be multiplied by the width and height of the Sprite.
-     * If the sprite width and height is 8 and x = 3, y = 5 then the
-     * sprite will be drawn at x = 24, y = 40.
+     * specified will be multiplied by the width and height of the IDrawable.
+     * If the drawable width and height is 8 and x = 3, y = 5 then the
+     * drawable will be drawn at x = 24, y = 40.
      */
     private RenderMode renderMode = RenderMode.PRECISE;
 
@@ -45,27 +46,27 @@ public class Renderer extends Bitmap {
     }
 
     /**
-     * Internal method to handle drawing sprites to the screen with a 
+     * Internal method to handle drawing drawables to the screen with a 
      * specific foreground and background color. Setting the values
      * to {@link Renderer#ignoreColor} will result in the colors being
      * ignored.
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
      * @param foregroundColor The hex color to override non-transparent pixels with.
      * @param backgroundColor The hex color to override transparent pixels with.
      */
-    private void drawSprite(Sprite sprite, int xp, int yp, int foregroundColor, int backgroundColor){
+    private void draw(IDrawable drawable, int xp, int yp, int foregroundColor, int backgroundColor){
         if (renderMode == RenderMode.TILED) {
-            xp *= sprite.getWidth();
-            yp *= sprite.getHeight();
+            xp *= drawable.getWidth();
+            yp *= drawable.getHeight();
         }
         
-        for (int y = 0; y < sprite.getHeight(); y++) {
+        for (int y = 0; y < drawable.getHeight(); y++) {
             int ya = y + yp;
-            for (int x = 0; x < sprite.getWidth(); x++) {
+            for (int x = 0; x < drawable.getWidth(); x++) {
                 int xa = x + xp;
-                int col = sprite.getPixel(x, y);
+                int col = drawable.getPixel(x, y);
                 if (col != transparentColor) setPixel(xa, ya, foregroundColor == ignoreColor ? col : foregroundColor);
                 else if (backgroundColor != ignoreColor) setPixel(xa, ya, backgroundColor);
             }
@@ -74,107 +75,107 @@ public class Renderer extends Bitmap {
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. If the {@link RenderMode} is
+     * Draws a {@link IDrawable} to the screen. If the {@link RenderMode} is
      * set to {@link RenderMode#TILED}, the position will be multiplied by the width and height
-     * of the Sprite. A {@link RenderMode#PRECISE} will draw the Sprite at
+     * of the IDrawable. A {@link RenderMode#PRECISE} will draw the IDrawable at
      * the precise x and y coordinates.
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
      */
-    public void drawSprite(Sprite sprite, int xp, int yp) {
-        drawSprite(sprite, xp, yp, ignoreColor, ignoreColor);
+    public void draw(IDrawable drawable, int xp, int yp) {
+        draw(drawable, xp, yp, ignoreColor, ignoreColor);
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. Overriding the non-transparent
+     * Draws a {@link IDrawable} to the screen. Overriding the non-transparent
      * pixels with a specific color. Specifying the override color as {@link Renderer#ignoreColor}
      * will result in it being ignored. If the {@link RenderMode} is set to
      * {@link RenderMode#TILED}, the position will be multiplied by the width and height of
-     * the Sprite. A {@link RenderMode#PRECISE} will draw the Sprite at the
+     * the IDrawable. A {@link RenderMode#PRECISE} will draw the IDrawable at the
      * precise x and y coordinates.
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
      * @param foregroundColor The hex color to override non-transparent pixels with.
      */
-    public void drawSpriteColored(Sprite sprite, int xp, int yp, int foregroundColor) {
-        drawSpriteColored(sprite, xp, yp, foregroundColor, ignoreColor);
+    public void drawColored(IDrawable drawable, int xp, int yp, int foregroundColor) {
+        drawColored(drawable, xp, yp, foregroundColor, ignoreColor);
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. Overriding the non-transparent
+     * Draws a {@link IDrawable} to the screen. Overriding the non-transparent
      * and transparent pixels with specific colors. Specifying the override colors as
      * {@link Renderer#ignoreColor} will result in them being ignored. If the {@link RenderMode}
      * is set to {@link RenderMode#TILED}, the position will be multiplied by the width and 
-     * height of the Sprite. A {@link RenderMode#PRECISE} will draw the Sprite
+     * height of the IDrawable. A {@link RenderMode#PRECISE} will draw the IDrawable
      * at the precise x and y coordinates.
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
      * @param foregroundColor The hex color to override non-transparent pixels with.
      * @param backgroundColor The hex color to override transparent pixels with.
      */
-    public void drawSpriteColored(Sprite sprite, int xp, int yp, int foregroundColor, int backgroundColor){
-        drawSprite(sprite, xp, yp, foregroundColor, backgroundColor);
+    public void drawColored(IDrawable drawable, int xp, int yp, int foregroundColor, int backgroundColor){
+        draw(drawable, xp, yp, foregroundColor, backgroundColor);
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. Blending the original Sprite
+     * Draws a {@link IDrawable} to the screen. Blending the original IDrawable
      * colors with a new color based on a value between 0 and 1, with 0
-     * being the original sprite color and 1 being the blended color. 
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
-     * @param blendColor The hex color to blend the original Sprite pixels with.
+     * being the original drawable color and 1 being the blended color. 
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
+     * @param blendColor The hex color to blend the original IDrawable pixels with.
      * @param factor An amount between 0-1 ot blend between the two colors.
      */
-    public void drawSpriteBlended(Sprite sprite, int xp, int yp, int blendColor, float factor) {
-        drawSpriteBlended(sprite, xp, yp, blendColor, factor, ignoreColor, ignoreColor);
+    public void drawBlended(IDrawable drawable, int xp, int yp, int blendColor, float factor) {
+        drawBlended(drawable, xp, yp, blendColor, factor, ignoreColor, ignoreColor);
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. Overriding the non-transparent
+     * Draws a {@link IDrawable} to the screen. Overriding the non-transparent
      * pixels with a specific color. Specifying the override color as {@link Renderer#ignoreColor}
      * will result in it being ignored. Also blending between the specified
      * override color and the blend color, based on a value between 0 and 1.
      * With 0 being the specified override color and 1 being the blended color. 
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
-     * @param blendColor The hex color to blend the original Sprite pixels with.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
+     * @param blendColor The hex color to blend the original IDrawable pixels with.
      * @param factor An amount between 0-1 ot blend between the two colors.
      * @param foregroundColor The hex color to override non-transparent pixels with.
      */
-    public void drawSpriteBlended(Sprite sprite, int xp, int yp, int blendColor, float factor, int foregroundColor) {
-        drawSpriteBlended(sprite, xp, yp, blendColor, factor, foregroundColor, ignoreColor);
+    public void drawBlended(IDrawable drawable, int xp, int yp, int blendColor, float factor, int foregroundColor) {
+        drawBlended(drawable, xp, yp, blendColor, factor, foregroundColor, ignoreColor);
     }
 
     /**
-     * Draws a {@link Sprite} to the screen. Overriding the non-transparent and
+     * Draws a {@link IDrawable} to the screen. Overriding the non-transparent and
      * transparent pixels with specific colors. Also blending between the 
      * specified override colors and the blend color, based on a value between 0
      * and 1. With 0 being the specified override colors and 1 being the blended
      * color.
-     * @param sprite The Sprite to draw to the screen.
-     * @param xp Position on the x axis to draw the Sprite.
-     * @param yp Position on the y axis to draw the Sprite.
-     * @param blendColor The hex color to blend the original Sprite pixels with.
+     * @param drawable The IDrawable to draw to the screen.
+     * @param xp Position on the x axis to draw the IDrawable.
+     * @param yp Position on the y axis to draw the IDrawable.
+     * @param blendColor The hex color to blend the original IDrawable pixels with.
      * @param factor An amount between 0-1 ot blend between the two colors.
      * @param foregroundColor The hex color to override non-transparent pixels with.
      * @param backgroundColor The hex color to override transparent pixels with.
      */
-    public void drawSpriteBlended(Sprite sprite, int xp, int yp, int blendColor, float factor, int foregroundColor, int backgroundColor) {
+    public void drawBlended(IDrawable drawable, int xp, int yp, int blendColor, float factor, int foregroundColor, int backgroundColor) {
         if (renderMode == RenderMode.TILED) {
-            xp *= sprite.getWidth();
-            yp *= sprite.getHeight();
+            xp *= drawable.getWidth();
+            yp *= drawable.getHeight();
         }
 
-        for (int y = 0; y < sprite.getHeight(); y++) {
+        for (int y = 0; y < drawable.getHeight(); y++) {
             int ya = y + yp;
-            for (int x = 0; x < sprite.getWidth(); x++) {
+            for (int x = 0; x < drawable.getWidth(); x++) {
                 int xa = x + xp;
-                int col = sprite.getPixel(x, y);
+                int col = drawable.getPixel(x, y);
                 if (col != transparentColor) setPixel(xa, ya, ColorHelper.blend(foregroundColor == ignoreColor ? col : foregroundColor, blendColor, factor));
                 else if (backgroundColor != ignoreColor) setPixel(xa, ya, ColorHelper.blend(backgroundColor, blendColor, factor));
             }
@@ -191,17 +192,31 @@ public class Renderer extends Bitmap {
      * @param color The hex color to fill the area with. 
      */
     public void fillWithColor(int xp, int yp, int w, int h, int color){
+        fillWithColor(xp, yp, w, h, color, 1f);
+    }
+
+    /**
+     * Fills a area with a specific color. The renderMode
+     * setting effects the positioning of this method. 
+     * @param xp The x position of the area to fill.
+     * @param yp The y position of the area to fill.
+     * @param w The width of the area to fill.
+     * @param h The height of the area to fill.
+     * @param color The hex color to fill the area with. 
+     * @param transparency The transparency of the fill color, will blend with previously drawn pixels.
+     */
+    public void fillWithColor(int xp, int yp, int w, int h, int color, float transparency){
         if(renderMode == RenderMode.TILED){
             xp *= w;
             yp *= h;
         }
         
-        if(color == transparentColor) return;
+        if(color == transparentColor || color == ignoreColor || transparency <= 0f) return;
         for(int y = 0; y < h; y++){
             int ya = y + yp;
             for(int x = 0; x < w; x++){
                 int xa = x + xp;
-                setPixel(xa, ya, color);
+                setPixel(xa, ya, ColorHelper.blend(getPixel(xa, ya), color, transparency));
             }
         }
     }
@@ -209,7 +224,7 @@ public class Renderer extends Bitmap {
     /**
      * Draw a string to the screen. If the position of the characters
      * is out of screen bounds, they will be ignored. The text color
-     * will be the same as is on the Font spritesheet. The {@link Renderer#renderMode}
+     * will be the same as is on the Font drawablesheet. The {@link Renderer#renderMode}
      * effects the positioning of the text.
      * @param text The string to draw to the screen.
      * @param font The font to use.
@@ -263,7 +278,7 @@ public class Renderer extends Bitmap {
         if(text == null || text.length() == 0) return;
 
         for(int i = 0; i < text.length(); i++){
-            Sprite sprite = font.getCharacterSprite(text.charAt(i));
+            IDrawable drawable = font.getCharacterSprite(text.charAt(i));
             int xa = xp + (renderMode == RenderMode.PRECISE ? i * font.getCharWidth() : i);
             switch (align){
                 case Font.ALIGN_CENTER:
@@ -277,8 +292,8 @@ public class Renderer extends Bitmap {
                     break;
             }
 
-            if(sprite == null) continue;
-            drawSpriteColored(sprite, xa, yp, foregroundColor, backgroundColor);
+            if(drawable == null) continue;
+            drawColored(drawable, xa, yp, foregroundColor, backgroundColor);
         }
     }
     

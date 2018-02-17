@@ -19,6 +19,12 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         if(numberOfMouseButtons <= 0) System.err.println("The number of mouse buttons is set to 0. Mouse button input will not work.");
     }
 
+    public void update(){
+        for(int i = 0; i < mouseButtonsDown.length; i++){
+            mouseButtonsDown[i] = false;
+        }
+    }
+    
     public boolean isKeyDown(int keyCode){
         if(keyCode <=0 || keyCode >= keysDown.length) return false;
         return keysDown[keyCode];
@@ -66,32 +72,43 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        
-    }
-
-    @Override
-    public void mousePressed(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
         if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = true;
     }
 
     @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
+//        if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = true;
+    }
+
+    @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = false;
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
+//        if (mouseEvent.getButton() >= 0 && mouseEvent.getButton() < mouseButtonsDown.length) mouseButtonsDown[mouseEvent.getButton()] = false;
     }
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
         mouseHasFocus = true;
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
         mouseHasFocus = false;
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
     }
 
     @Override

@@ -20,6 +20,7 @@ public class ImageLoader {
         try {
             if (!new File(filePath).exists()) throw new FileNotFoundException("Could not find file '" + filePath + "'");
             return ImageIO.read(new FileInputStream(filePath));
+//            InputStream in = ImageLoader.class.getClassLoader().getResourceAsStream(filePath);
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }catch (IOException e){

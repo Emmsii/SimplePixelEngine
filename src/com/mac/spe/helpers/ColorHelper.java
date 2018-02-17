@@ -8,8 +8,6 @@ package com.mac.spe.helpers;
 public class ColorHelper {
     
     public static int blend(int a, int b, float factor){
-        if(a == 0 || b == 0) return 0;
-        
         if(factor == 0) return a;
         else if(factor == 1) return b;
         

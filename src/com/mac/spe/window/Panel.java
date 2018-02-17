@@ -12,7 +12,7 @@ import java.awt.image.DataBufferInt;
  * PC
  * Created by Matt on 11/02/2018 at 08:26 AM.
  */
-public class Panel extends Canvas{
+public class Panel extends Canvas {
     
     private final int width, height;
     private final int scale;
