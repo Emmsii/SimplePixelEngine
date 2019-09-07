@@ -17,6 +17,5 @@ public class Terminal extends JFrame{
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        
     }
 }
